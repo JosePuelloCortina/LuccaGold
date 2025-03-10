@@ -3,6 +3,7 @@ import * as bcrypt from "bcrypt";
 import { Role } from './Rol';
 import { Perfil } from './Perfil';
 import { PedidoPorUsuario } from './PedidoPorUsuario';
+import { Venta } from './Venta';
 
 @Entity('usuarios')
 export class Usuario extends BaseEntity {
@@ -16,12 +17,13 @@ export class Usuario extends BaseEntity {
 
     @Column({ unique: true })
     email!: string;
-    
-    @Column()
-    telefono!: string;
 
     @OneToMany(() => PedidoPorUsuario, pedidoPorUsuario => pedidoPorUsuario.usuario)
     pedidoPorUsuario!: PedidoPorUsuario[];
+
+    
+    @OneToMany(() => Venta, ventas => ventas.usuario)
+    ventas!: Venta[];
 
     @Column({ select: false })
     password!: string;

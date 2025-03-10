@@ -1,19 +1,31 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken'
+import dotenv from "dotenv";
 
-export const requireAuth = (req: Request, res:Response, next: NextFunction) => {
+dotenv.config();
+const SECRET_KEY = process.env.SECRET_KEY || "secret";
+
+export const requireAuth = (req: Request, res: Response, next: NextFunction): void => {
     try {
         const authHeader = req.headers.authorization;
 
-        if(!authHeader) return res.status(401).json({message: "Unauthorized"});
+        if (!authHeader) {
+            res.status(401).json({ message: "Unauthorized" });
+            return;
+        }
 
         const token = authHeader.split(' ')[1];
-
-        if(!token) return res.status(401).json({message: "Unauthorized"});
-
-        jwt.verify(token,'secret', (err, user) =>{
-            if (err) return res.status(401).json({message: "Unauthorized"});
-
+        console.log(token);
+        if (!token) {
+            res.status(401).json({ message: "Unauthorized" });
+            return;
+        }
+        jwt.verify(token, SECRET_KEY , (err, user) => {
+            if (err) {
+                res.status(401).json({ message: "Unauthorized" });
+                return;
+            }
+            console.log(user);
             req.body.user = user
             next()
         })

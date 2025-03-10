@@ -29,7 +29,7 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
         const user = await AppDataSource.getRepository(Usuario).findOne({
             where: { id: id },
             relations: ['rol', 'perfil']
-        },)
+        })
         res.json(user);
         return;
     } catch (error) {
@@ -43,8 +43,8 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
 
 export const createUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { nombre, email, rol, password, perfil, telefono } = req.body;
-        if (!nombre || !email || !rol || !password || !perfil || !telefono) {
+        const { nombre, email, rol, password, perfil } = req.body;
+        if (!nombre || !email || !rol || !password || !perfil ) {
             res.status(400).json({ error: "Bad request, missing data" })
             return;
         }
@@ -66,11 +66,9 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
             user.nombre = nombre
             user.email = email
             user.password = hashPassword
-            user.telefono = telefono
             user.perfil = perfil
             user.rol = rol
             const createUser = await userRepository.save(user);
-            console.log("createUser: ", createUser);
             res.status(201).json({ id: createUser.id });
             return;
         }
@@ -87,7 +85,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params
-        const { nombre, email, password, telefono, perfil, rol } = req.body;
+        const { nombre, email, password, perfil, rol } = req.body;
         const user = await await AppDataSource.getRepository(Usuario).findOne({
             where: { id: id },
             relations: ['rol', 'perfil']
@@ -104,7 +102,6 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
         user.nombre = nombre;
         user.email = email;
         user.password = hashPassword;
-        user.telefono = telefono;
         user.perfil = perfil;
         user.rol = rol;
 
@@ -124,7 +121,7 @@ export const getUserPedidos = async (req: Request, res: Response): Promise<void>
         const { id } = req.params;
         const user = await AppDataSource.getRepository(Usuario).findOne({
             where: { id: id },
-            relations: ['pedidoPorUsuario', 'pedidoPorUsuario.pedido', 'pedidoPorUsuario.pedido.productos']
+            relations: [ 'pedidoPorUsuario.pedido.productos']
         },)
         res.json(user);
         return;
@@ -133,6 +130,22 @@ export const getUserPedidos = async (req: Request, res: Response): Promise<void>
             res.status(500).json({ message: error.message });
             return;
         }
+    }
+}
 
+export const getUserVentas = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const user = await AppDataSource.getRepository(Usuario).findOne({
+            where: { id: id },
+            relations: [ 'ventas.pedido.productos']
+        },)
+        res.json(user);
+        return;
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ message: error.message });
+            return;
+        }
     }
 }
