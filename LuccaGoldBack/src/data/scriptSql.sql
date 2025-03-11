@@ -207,7 +207,7 @@ VALUES
             FROM
                 usuarios
             WHERE
-                email = 'yhon8aM@gmail.com'
+                email = 'juan@example.com'
         ),
         2350.00,
         'tarjeta'
@@ -242,3 +242,16 @@ VALUES
                 1
         )
     );
+
+    SELECT
+        `Usuario`.`id` AS `Usuario_id`,
+        `Usuario`.`nombre` AS `Usuario_nombre`,
+        `Usuario`.`email` AS `Usuario_email`,
+        `Usuario`.`rol_id` AS `Usuario_rol_id`,
+        `Usuario`.`password` AS `Usuario_password`,
+        `Usuario`.`password`,
+        rol.nombre
+        FROM
+            `usuarios` `Usuario`
+        INNER JOIN `roles` `roles` ON `roles`.`id`=`Usuario`.`rol_id`
+        WHERE `Usuario`.`email` = 'yhon8aM@gmail.com'"
