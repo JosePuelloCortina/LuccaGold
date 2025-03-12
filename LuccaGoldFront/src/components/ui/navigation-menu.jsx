@@ -8,8 +8,7 @@ export default function Navbar() {
   return (
     <NavigationMenu.Root className="fixed top-0 left-0 w-full bg-[#F7F6F2] shadow-md p-4 flex justify-between items-center px-10">
       <div className="text-xl font-serif font-semibold text-[#4B6587]">LuccaGold</div>
-      
-      {/* Botón hamburguesa para móviles */}
+
       <button 
         className="md:hidden text-[#4B6587]" 
         onClick={() => setIsOpen(!isOpen)}
