@@ -32,11 +32,9 @@ export const loginHandler = async (
             .createQueryBuilder()
             .innerJoin("Usuario.rol", "roles")
             .addSelect('Usuario.password')
-            .addSelect('rol.nombre')
+            .addSelect('roles.nombre')
             .where("Usuario.email = :email", { email: email })
             .getOne();
-
-            console.log(user);
 
         if (!user || !user.password) {
             res.status(400).json({ message: "user not found" });
