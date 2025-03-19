@@ -23,20 +23,20 @@ export const loginHandler = async (
             res.status(400).json({ message: "Email is not valid" });
             return;
         }
-        if (!validatePassword(password)) {
-            res.status(400).json({ message: "Password is not valid" });
-            return;
-        }
+        // if (!validatePassword(password)) {
+        //     res.status(400).json({ message: "Password is not valid" });
+        //     return;
+        // }
 
         const user = await AppDataSource.getRepository(Usuario)
             .createQueryBuilder()
             .innerJoin("Usuario.rol", "roles")
             .addSelect('Usuario.password')
-            .addSelect('rol.nombre')
+            .addSelect('roles.nombre')
             .where("Usuario.email = :email", { email: email })
             .getOne();
 
-            console.log(user);
+        console.log(user);
 
         if (!user || !user.password) {
             res.status(400).json({ message: "user not found" });
@@ -53,7 +53,7 @@ export const loginHandler = async (
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error", error });
         return;
     }
 };

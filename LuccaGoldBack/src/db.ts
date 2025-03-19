@@ -13,4 +13,4 @@ export const AppDataSource = new DataSource({
     synchronize: process.env.E_PRODUCTION === 'true' || true,
     logging: false,
     entities: ["src/entities/*.ts"]
-})
+});
