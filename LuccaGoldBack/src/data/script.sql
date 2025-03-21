@@ -1,28 +1,20 @@
--- USE `test_db01`;
-
+SELECT id FROM roles WHERE nombre = 'Cliente';
 INSERT INTO roles (id, nombre) VALUES (UUID(), 'Admin');
 INSERT INTO roles (id, nombre) VALUES (UUID(), 'Cliente');
 
-
--- Insertar usuarios
 INSERT INTO usuarios (id, nombre, email, password, rol_id)
-VALUES (
-        UUID(),
-        'Yhon Ochoa',
-        'yhon@example.com',
-        'Yhon_123*',
+VALUES (UUID(),'Yhon Ochoa','yhon@example.com','Yhon8am123*',
         ( SELECT id FROM roles WHERE nombre = 'Cliente' )
     );
 
 INSERT INTO usuarios (id, nombre, email, password, rol_id)
-VALUES ( UUID(),'Ana Gómez','ana@example.com','Ana_123*',
+VALUES ( UUID(),'Ana Gómez','ana@example.com','Maria8a123*',
         ( SELECT id FROM roles WHERE nombre = 'Admin'));
 
 INSERT INTO usuarios (id, nombre, email, password, rol_id)
-VALUES (UUID(),'Yhon J. Ochoa','yhon@gmail.com','Yhon_123*',
+VALUES (UUID(),'Yhon J. Ochoa','yhon@gmail.com','Yhon8a123*',
         ( SELECT id FROM roles WHERE nombre = 'Admin' ));
 
--- Insertar perfiles
 INSERT INTO perfiles (id, usuario_id, telefono, direccion, ciudad, pais)
 VALUES( UUID(),( SELECT id FROM usuarios WHERE email = 'yhon@gmail.com'),
         '3001234537','Calle 123','Bucaramanga','Colombia' );
@@ -35,22 +27,19 @@ INSERT INTO perfiles (id, usuario_id, telefono, direccion, ciudad, pais)
 VALUES (UUID(),(SELECT id FROM usuarios WHERE email = 'ana@example.com'),
         '3129876543','Av. Siempre Viva','Lima','Perú');
 
--- Insertar categorías de productos
 INSERT INTO categorias (id, nombre, descripcion)
 VALUES (UUID(),'Anillos', 'Anillos de oro y plata');
 
 INSERT INTO categorias (id, nombre, descripcion)
-    (UUID(),'Aretes', 'Arete de oro y plata');
+VALUES (UUID(),'Aretes', 'Arete de oro y plata');
     
 INSERT INTO categorias (id, nombre, descripcion)
-    (UUID(),'Arracada', 'Arracada de oro y plata');
+VALUES (UUID(),'Arracada', 'Arracada de oro y plata');
     
 INSERT INTO categorias (id, nombre, descripcion)
-    (UUID(),'Collares', 'Collares elegantes');
+VALUES (UUID(),'Collares', 'Collares elegantes');
 
--- Insertar productos
-INSERT INTO productos ( id,nombre,descripcion,material,peso,precio,stock,imagen_url,
-        categoria_id)
+INSERT INTO productos ( id,nombre,descripcion,material,peso,precio,stock,imagen_url, categoria_id)
 VALUES
     (
         UUID(),
@@ -71,8 +60,7 @@ VALUES
         )
     );
 
-    INSERT INTO productos ( id,nombre,descripcion,material,peso,precio,stock,imagen_url,
-        categoria_id)
+    INSERT INTO productos ( id,nombre,descripcion,material,peso,precio,stock,imagen_url,categoria_id)
 VALUES
     (
         UUID(),
@@ -94,8 +82,7 @@ VALUES
     );
 
 
-    INSERT INTO productos ( id,nombre,descripcion,material,peso,precio,stock,imagen_url,
-        categoria_id)
+    INSERT INTO productos ( id,nombre,descripcion,material,peso,precio,stock,imagen_url,categoria_id)
 VALUES
     (
         UUID(),
@@ -128,20 +115,15 @@ VALUES
         )
     );
 
--- Insertar pedidos
 INSERT INTO
-    pedidos (id, usuario_id, estado, total)
+    pedidos (id, estado, total)
 VALUES
     (
         UUID(),
-        (
-            SELECT id FROM usuarios WHERE email = 'yhon@example.com'
-        ),
         'pendiente',
         2350.00
     );
 
--- Insertar productos en pedidos
 INSERT INTO
     productos_pedido (id, pedido_id, producto_id, cantidad, precio_unitario, subtotal)
 VALUES
@@ -174,8 +156,6 @@ VALUES
         ( SELECT precio FROM productos WHERE nombre = 'Collar de Plata' LIMIT 1)
     );
 
-
--- Insertar ventas
 INSERT INTO
     ventas (id, pedido_id, usuario_id, total, metodo_pago)
 VALUES
@@ -191,13 +171,11 @@ VALUES
         'tarjeta'
     );
 
--- Insertar pedidos
 INSERT INTO
     pedidos (id, estado, total)
 VALUES
     (UUID(),'pendiente', 2350.00);
 
--- Insertar relación en pedido_por_usuario
 INSERT INTO
     pedido_por_usuario (id, usuario_id,  pedido_id)
 VALUES
@@ -209,4 +187,4 @@ VALUES
         (
             SELECT id FROM pedidos LIMIT 1
         )
-    );
+    )

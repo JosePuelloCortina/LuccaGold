@@ -23,10 +23,10 @@ export const loginHandler = async (
             res.status(400).json({ message: "Email is not valid" });
             return;
         }
-        // if (!validatePassword(password)) {
-        //     res.status(400).json({ message: "Password is not valid" });
-        //     return;
-        // }
+        if (!validatePassword(password)) {
+            res.status(400).json({ message: "Password is not valid" });
+            return;
+        }
 
         const user = await AppDataSource.getRepository(Usuario)
             .createQueryBuilder()
